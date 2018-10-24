@@ -8,6 +8,7 @@ class Redis {
       console.log("Redis client conected!");
     });
     this.getAsync = promisify(this.client.get).bind(this.client);
+    this.getAllHashAsync = promisify(this.client.hgetall).bind(this.client);
   }
 
   async Set(key, value) {
@@ -17,6 +18,13 @@ class Redis {
   async Get(key) {
     return await this.getAsync(key);
   }
-}
 
+  async HashSet(key, hash) {
+    return await this.client.HMSET(key, hash)
+  }
+
+  async HGetAll(key) {
+    return await this.getAllHashAsync(key)
+  }
+}
 module.exports = Redis;
