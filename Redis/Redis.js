@@ -1,6 +1,7 @@
 require("dotenv").config();
 const redis = require("redis");
 const { promisify } = require("util");
+const uuid = require('uuid');
 class Redis {
   constructor() {
     this.client = redis.createClient(process.env.REDIS_URL);
@@ -25,6 +26,11 @@ class Redis {
 
   async HGetAll(key) {
     return await this.getAllHashAsync(key)
+  }
+
+  genKey(namespace){
+    const key = `${namespace}_${uuid.v4()}`
+    return key
   }
 }
 module.exports = Redis;
